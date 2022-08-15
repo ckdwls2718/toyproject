@@ -1,0 +1,37 @@
+spring:
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://localhost:3306/toyproject
+    username: ChanGenie
+    password:
+
+  #    url: jdbc:mariadb://gotravle-1.ct4wnjjjqpxo.us-west-1.rds.amazonaws.com:3306/gotravel
+  #    username: root
+  #    password: mgpdwr75zi
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+
+#  servlet:
+#    multipart:
+#      max-file-size: 10MB
+#      max-request-size: 30MB
+#
+#  config:
+#    import: classpath:application-s3Storage.yml
+
+logging.level:
+  org.hibernate.SQL: debug
+#  org.hibernate.type: trace
+
+jwt:
+  secret: asdasjdhqwiueqwyeiqwhrtwejkrthskjdgfhsdoiufysaiurwyeruiweryiuewasdas1231qweqwjhktehkjwqrwrsdfatytreuo34275349534315234557567562sdgsgdf
+
+#server:
+#  address: 172.31.2.223
+#  port: 8080
