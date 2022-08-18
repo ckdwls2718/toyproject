@@ -31,7 +31,10 @@ public class AuthService {
     public MemberResponseDto singUp(MemberRequestDto dto) {
         if (memberRepository.existsById(dto.getEmail())) {
             throw new RuntimeException("이미 가입되어 있는 유저입니다");
+        } else if (memberRepository.existsByNickname(dto.getNickname())){
+            throw new RuntimeException("이미 사용중인 닉네임입니다.");
         }
+
         Member member = dto.toMember(passwordEncoder);
 
         return MemberResponseDto.of(memberRepository.save(member));
