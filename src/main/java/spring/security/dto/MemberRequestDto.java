@@ -12,11 +12,13 @@ import spring.security.entity.Member;
 public class MemberRequestDto {
     private String email;
     private String password;
+    private String nickname;
 
     public Member toMember(PasswordEncoder passwordEncoder) {
         return Member.builder()
                 .email(email)
                 .password(passwordEncoder.encode(password))
+                .nickname(nickname)
                 .authority(Authority.ROLE_USER)
                 .build();
     }
