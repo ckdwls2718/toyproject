@@ -10,6 +10,7 @@ import spring.security.entity.Member;
 @Getter
 @ToString
 public class MemberRequestDto {
+
     private String email;
     private String password;
     private String nickname;
