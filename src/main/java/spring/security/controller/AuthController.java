@@ -1,5 +1,6 @@
 package spring.security.controller;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +29,11 @@ public class AuthController {
     @PostMapping("/reissue")
     public ResponseEntity<TokenDto> reissue(@RequestBody TokenRequestDto dto) {
         return ResponseEntity.ok(authService.reissue(dto));
+    }
+
+    @GetMapping("/hi")
+    public ResponseEntity<String> hi(){
+        return ResponseEntity.ok("hi");
     }
 
 }
