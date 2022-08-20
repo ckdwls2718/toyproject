@@ -6,9 +6,9 @@ spring:
 #    username: ChanGenie
 #    password:
 
-      url: jdbc:mariadb://changjindb.cmmetqyyxlhs.ap-northeast-2.rds.amazonaws.com:3306/toyproject
-      username: root
-      password: mgpdwr75zi
+    url: jdbc:mariadb://changjindb.cmmetqyyxlhs.ap-northeast-2.rds.amazonaws.com:3306/toyproject
+    username: root
+    password: mgpdwr75zi
 
   jpa:
     hibernate:
