@@ -1,17 +1,18 @@
 package spring.security.entity;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @ToString
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 public class Board {
 
     @Id
@@ -43,4 +44,6 @@ public class Board {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+    private List<BoardImage> boardImageList = new ArrayList<>();
 }

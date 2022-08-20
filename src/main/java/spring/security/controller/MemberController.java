@@ -29,7 +29,7 @@ public class MemberController {
         return ResponseEntity.ok(memberService.changeNickname(requestDto));
     }
 
-    @PutMapping("changePassword")
+    @PutMapping("/changePassword")
     public ResponseEntity<MemberResponseDto> changePassword(@RequestBody PWDto dto) {
         return ResponseEntity.ok(memberService.changePassword(dto));
     }

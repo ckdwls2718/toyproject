@@ -1,0 +1,11 @@
+cloud:
+  aws:
+    stack:
+      auto: false
+    region:
+      static: ap-northeast-2
+    credentials:
+      access-key: AKIAWWGNHJ33XOCQJRWO
+      secret-key: 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
+    s3:
+      bucket: scnu-gotravel
