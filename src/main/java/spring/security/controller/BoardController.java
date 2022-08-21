@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import spring.security.dto.RequestBoardDto;
+import spring.security.dto.ResponseBoardDto;
 import spring.security.service.BoardService;
 import spring.security.service.S3Uploader;
 
@@ -21,6 +22,16 @@ public class BoardController {
     private final BoardService boardService;
     private final S3Uploader s3Uploader;
 
+    @GetMapping("")
+    public ResponseEntity<List<ResponseBoardDto>> findAll() {
+        return ResponseEntity.ok().body(boardService.findAll());
+    }
+
+    @GetMapping("/{boardId}")
+    public ResponseEntity<ResponseBoardDto> findOne(@PathVariable("boardId") Long boardId) {
+        return ResponseEntity.ok().body(boardService.findOne(boardId));
+    }
+
     @PostMapping(value = "", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<String> save(@RequestPart("images") List<MultipartFile> multipartFileList,
                                        @RequestPart("requestDto") RequestBoardDto boardDto) {
@@ -29,7 +40,7 @@ public class BoardController {
 
             Long saveBoardId = boardService.save(boardDto, urlList);
 
-            return ResponseEntity.ok().body("저장된 boardId : " + saveBoardId);
+            return ResponseEntity.ok().body("save boardId : " + saveBoardId);
 
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -47,7 +58,7 @@ public class BoardController {
                 s3Uploader.deleteS3(filename);
             }
 
-            return ResponseEntity.ok().body("삭제되었습니다");
+            return ResponseEntity.ok().body("Success Delete");
 
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());

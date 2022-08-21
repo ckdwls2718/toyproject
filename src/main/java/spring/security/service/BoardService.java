@@ -1,10 +1,12 @@
 package spring.security.service;
 
+import com.amazonaws.services.kms.model.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.security.dto.RequestBoardDto;
+import spring.security.dto.ResponseBoardDto;
 import spring.security.entity.Board;
 import spring.security.entity.BoardImage;
 import spring.security.entity.Category;
@@ -41,7 +43,6 @@ public class BoardService {
         return savedBoard.getId();
     }
 
-    //S3에서도 파일을 삭제하는 로직 추가해보기기
     @Transactional
     public List<String> delete(Long boardId) {
        List<String> boardImageList = boardImageRepository.findByBoardId(boardId)
@@ -50,6 +51,27 @@ public class BoardService {
        boardRepository.deleteById(boardId);
 
        return boardImageList;
+    }
+
+    public List<ResponseBoardDto> findAll() {
+
+        List<ResponseBoardDto> boardDtoList = new ArrayList<>();
+
+        List<Board> boardList = boardRepository.findAll();
+
+        for (Board board : boardList) {
+            boardDtoList.add(entityToDto(board));
+        }
+
+        return boardDtoList;
+    }
+
+    public ResponseBoardDto findOne(Long boardId) {
+
+        Board findBoard = boardRepository.findById(boardId)
+                .orElseThrow(() -> new NotFoundException("해당 게시물을 찾을 수 없습니다"));
+
+        return entityToDto(findBoard);
     }
 
     private Board dtoToEntity(RequestBoardDto boardDto) {
@@ -65,6 +87,29 @@ public class BoardService {
                 .startDate(boardDto.getStartDate())
                 .finishDate(boardDto.getFinishDate())
                 .category(category)
+                .build();
+    }
+
+    private ResponseBoardDto entityToDto(Board board) {
+
+        List<String> imageUrlList = new ArrayList<>();
+
+        List<BoardImage> boardImageList = board.getBoardImageList();
+        for (BoardImage boardImage : boardImageList) {
+            imageUrlList.add(boardImage.getUrl());
+        }
+
+        return ResponseBoardDto.builder()
+                .id(board.getId())
+                .title(board.getTitle())
+                .imageUrlList(imageUrlList)
+                .content(board.getContent())
+                .nowDonation(board.getNowDonation())
+                .targetDonation(board.getTargetDonation())
+                .startDate(board.getStartDate().toString())
+                .finishDate(board.getFinishDate().toString())
+                .cheerCount(board.getCheerCount())
+                .category(board.getCategory().getName())
                 .build();
     }
 }
