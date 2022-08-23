@@ -23,7 +23,4 @@ public class BoardImage {
     @JoinColumn(name = "board_id")
     private Board board;
 
-    public void changeBoard(Board board) {
-        this.board = board;
-    }
 }

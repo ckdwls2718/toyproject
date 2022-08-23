@@ -17,6 +17,7 @@ import spring.security.repository.BoardRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -93,24 +94,31 @@ public class BoardService {
         findBoard.minusDonation(donation);
     }
 
-//    @Transactional
-//    public List<String> modify(Long boardId, RequestBoardDto boardDto) {
-//
-//        List<String> imageUrlList = new ArrayList<>();
-//
-//        Board findBoard = boardRepository.findById(boardId)
-//                .orElseThrow(() -> new RuntimeException("해당 게시물을 찾을 수 없습니다"));
-//
-//        for (BoardImage boardImage : findBoard.getBoardImageList()) {
-//            imageUrlList.add(boardImage.getUrl());
-//        }
-//        boardImageRepository.deleteByBoardId(boardId);
-//
-//
-//
-//
-//        return imageUrlList;
-//    }
+    @Transactional
+    public List<String> modify(RequestBoardDto boardDto, List<String> urlList) {
+
+        List<String> imageUrlList = new ArrayList<>();
+
+        Board findBoard = boardRepository.findById(boardDto.getId())
+                .orElseThrow(() -> new RuntimeException("해당 게시물을 찾을 수 없습니다"));
+
+        for (BoardImage boardImage : findBoard.getBoardImageList()) {
+            imageUrlList.add(boardImage.getUrl());
+        }
+        boardImageRepository.deleteByBoardId(boardDto.getId());
+
+        findBoard.changeBoard(boardDto);
+
+        for (String url : urlList) {
+            BoardImage boardImage = BoardImage.builder()
+                    .url(url)
+                    .board(findBoard)
+                    .build();
+            boardImageRepository.save(boardImage);
+        }
+
+        return imageUrlList;
+    }
 
     private Board dtoToEntity(RequestBoardDto boardDto) {
 
@@ -132,14 +140,14 @@ public class BoardService {
 
         List<String> imageUrlList = new ArrayList<>();
 
-        List<BoardImage> boardImageList = board.getBoardImageList();
+        Set<BoardImage> boardImageList = board.getBoardImageList();
         for (BoardImage boardImage : boardImageList) {
             imageUrlList.add(boardImage.getUrl());
         }
 
         List<CommentDto> commentDtoList = new ArrayList<>();
 
-        List<Comment> commentList = board.getCommentList();
+        Set<Comment> commentList = board.getCommentList();
         for (Comment comment : commentList) {
             commentDtoList.add(CommentDto.builder()
                     .id(comment.getId())

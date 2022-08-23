@@ -1,11 +1,14 @@
 package spring.security.entity;
 
 import lombok.*;
+import spring.security.dto.RequestBoardDto;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @ToString
@@ -45,10 +48,10 @@ public class Board {
     private Category category;
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
-    private List<BoardImage> boardImageList = new ArrayList<>();
+    private Set<BoardImage> boardImageList = new HashSet<>();
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
-    private List<Comment> commentList = new ArrayList<>();
+    private Set<Comment> commentList = new HashSet<>();
 
     public void plusDonation(Long donation) {
 
@@ -61,4 +64,14 @@ public class Board {
     public void minusDonation(Long donation) {
         this.nowDonation -= donation;
     }
+
+    public void changeBoard(RequestBoardDto boardDto) {
+        this.title = boardDto.getTitle();
+        this.content = boardDto.getContent();
+        this.targetDonation = boardDto.getTargetDonation();
+        this.startDate = boardDto.getStartDate();
+        this.finishDate = boardDto.getFinishDate();
+        this.category = Category.builder().id(boardDto.getCategoryId()).build();
+    }
+
 }

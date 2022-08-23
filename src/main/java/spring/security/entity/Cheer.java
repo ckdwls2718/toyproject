@@ -21,7 +21,6 @@ public class Cheer {
     @JoinColumn(name = "board_id")
     private Board board;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;

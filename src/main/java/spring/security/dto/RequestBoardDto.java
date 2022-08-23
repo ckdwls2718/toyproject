@@ -14,6 +14,8 @@ import java.time.LocalDate;
 @ToString
 public class RequestBoardDto {
 
+    private Long id;
+
     private String title;
 
     private String content;

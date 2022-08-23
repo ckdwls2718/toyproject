@@ -7,6 +7,7 @@ import javax.persistence.*;
 @Entity
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Getter
 @Builder
 public class Comment {
@@ -15,12 +16,14 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @Column(nullable = false)
     private Long donation;
 
     @ManyToOne(fetch = FetchType.LAZY)

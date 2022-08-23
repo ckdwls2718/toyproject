@@ -51,8 +51,16 @@ public class S3Uploader {
         return amazonS3Client.getUrl(bucket, fileName).toString();
     }
 
+    public void deleteFiles(List<String> urlList, String dirname) {
+        for (String url : urlList) {
+            String[] split = url.split("/");
+            String filename = dirname+"/" + split[split.length - 1];
+            deleteS3(filename);
+        }
+    }
+
     // S3에서 삭제
-    public void deleteS3(String fileName) {
+    private void deleteS3(String fileName) {
         DeleteObjectRequest request = new DeleteObjectRequest(bucket, fileName);
         amazonS3Client.deleteObject(request);
     }

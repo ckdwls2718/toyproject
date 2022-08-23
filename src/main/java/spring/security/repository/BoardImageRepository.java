@@ -1,6 +1,7 @@
 package spring.security.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import spring.security.entity.BoardImage;
@@ -13,6 +14,7 @@ public interface BoardImageRepository extends JpaRepository<BoardImage, Long> {
     @Query("select bi.url from BoardImage bi where bi.board.id =:boardId")
     Optional<List<String>> findByBoardId(@Param("boardId") Long boardId);
 
+    @Modifying
     @Query("delete from BoardImage bi where bi.board.id =:boardId")
     void deleteByBoardId(@Param("boardId") Long boardId);
 }
