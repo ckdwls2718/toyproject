@@ -20,5 +20,6 @@ public class ResponseBoardDto {
     private String startDate;
     private String finishDate;
     private String category;
+    private List<CommentDto> comment;
     private Long cheerCount;
 }

@@ -46,4 +46,19 @@ public class Board {
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<BoardImage> boardImageList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
+    private List<Comment> commentList = new ArrayList<>();
+
+    public void plusDonation(Long donation) {
+
+        if (donation > targetDonation - nowDonation) {
+            throw new RuntimeException("남은 금액보다 큰 금액은 기부할 수 없습니다");
+        }
+        this.nowDonation += donation;
+    }
+
+    public void minusDonation(Long donation) {
+        this.nowDonation -= donation;
+    }
 }

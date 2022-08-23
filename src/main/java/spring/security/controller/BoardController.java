@@ -6,9 +6,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import spring.security.dto.CommentDto;
 import spring.security.dto.RequestBoardDto;
 import spring.security.dto.ResponseBoardDto;
 import spring.security.service.BoardService;
+import spring.security.service.CommentService;
 import spring.security.service.S3Uploader;
 
 import java.util.List;
@@ -20,6 +22,7 @@ import java.util.List;
 public class BoardController {
 
     private final BoardService boardService;
+    private final CommentService commentService;
     private final S3Uploader s3Uploader;
 
     @GetMapping("")
@@ -64,5 +67,27 @@ public class BoardController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
 
+    }
+
+    @PostMapping("/{boardId}/comment")
+    public ResponseEntity<String> saveComment(@PathVariable("boardId") Long boardId, CommentDto commentDto) {
+
+        Long donation = commentService.save(boardId, commentDto);
+
+        boardService.plusDonation(boardId, donation);
+
+        return ResponseEntity.ok().body(boardId + "번 게시물에 댓글이 등록되었습니다");
+
+    }
+
+    @DeleteMapping("/{boardId}/comment")
+    public ResponseEntity<String> deleteComment(@PathVariable("boardId") Long boardId,
+                                                @RequestBody CommentDto commentDto) {
+
+        commentService.delete(commentDto.getId());
+
+        boardService.minusDonation(boardId, commentDto.getDonation());
+
+        return ResponseEntity.ok().body(boardId + "번 게시물의 댓글이 삭제되었습니다");
     }
 }

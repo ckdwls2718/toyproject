@@ -5,11 +5,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import spring.security.dto.CommentDto;
 import spring.security.dto.RequestBoardDto;
 import spring.security.dto.ResponseBoardDto;
 import spring.security.entity.Board;
 import spring.security.entity.BoardImage;
 import spring.security.entity.Category;
+import spring.security.entity.Comment;
 import spring.security.repository.BoardImageRepository;
 import spring.security.repository.BoardRepository;
 
@@ -43,6 +45,7 @@ public class BoardService {
         return savedBoard.getId();
     }
 
+    // 자기게시물만 삭제할 수 있는 권한 추가하기
     @Transactional
     public List<String> delete(Long boardId) {
        List<String> boardImageList = boardImageRepository.findByBoardId(boardId)
@@ -74,6 +77,41 @@ public class BoardService {
         return entityToDto(findBoard);
     }
 
+    @Transactional
+    public void plusDonation(Long boardId, Long donation) {
+        Board findBoard = boardRepository.findById(boardId)
+                .orElseThrow(() -> new RuntimeException("해당 게시물을 찾을 수 없습니다"));
+
+        findBoard.plusDonation(donation);
+    }
+
+    @Transactional
+    public void minusDonation(Long boardId, Long donation) {
+        Board findBoard = boardRepository.findById(boardId)
+                .orElseThrow(() -> new RuntimeException("해당 게시물을 찾을 수 없습니다"));
+
+        findBoard.minusDonation(donation);
+    }
+
+//    @Transactional
+//    public List<String> modify(Long boardId, RequestBoardDto boardDto) {
+//
+//        List<String> imageUrlList = new ArrayList<>();
+//
+//        Board findBoard = boardRepository.findById(boardId)
+//                .orElseThrow(() -> new RuntimeException("해당 게시물을 찾을 수 없습니다"));
+//
+//        for (BoardImage boardImage : findBoard.getBoardImageList()) {
+//            imageUrlList.add(boardImage.getUrl());
+//        }
+//        boardImageRepository.deleteByBoardId(boardId);
+//
+//
+//
+//
+//        return imageUrlList;
+//    }
+
     private Board dtoToEntity(RequestBoardDto boardDto) {
 
         Category category = Category.builder().id(boardDto.getCategoryId()).build();
@@ -99,10 +137,23 @@ public class BoardService {
             imageUrlList.add(boardImage.getUrl());
         }
 
+        List<CommentDto> commentDtoList = new ArrayList<>();
+
+        List<Comment> commentList = board.getCommentList();
+        for (Comment comment : commentList) {
+            commentDtoList.add(CommentDto.builder()
+                    .id(comment.getId())
+                    .content(comment.getContent())
+                    .nickname(comment.getMember().getNickname())
+                    .donation(comment.getDonation())
+                    .build());
+        }
+
         return ResponseBoardDto.builder()
                 .id(board.getId())
                 .title(board.getTitle())
                 .imageUrlList(imageUrlList)
+                .comment(commentDtoList)
                 .content(board.getContent())
                 .nowDonation(board.getNowDonation())
                 .targetDonation(board.getTargetDonation())
