@@ -65,6 +65,14 @@ public class Board {
         this.nowDonation -= donation;
     }
 
+    public void plusCheer() {
+        this.cheerCount++;
+    }
+
+    public void minusCheer() {
+        this.cheerCount--;
+    }
+
     public void changeBoard(RequestBoardDto boardDto) {
         this.title = boardDto.getTitle();
         this.content = boardDto.getContent();

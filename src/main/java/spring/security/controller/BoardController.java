@@ -45,14 +45,19 @@ public class BoardController {
     @PostMapping(value = "", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<String> save(@RequestPart("images") List<MultipartFile> multipartFileList,
                                        @RequestPart("requestDto") RequestBoardDto boardDto) {
+
+        List<String> failUrlList = null;
+
         try {
             List<String> urlList = s3Uploader.uploadFiles(multipartFileList, dirname);
+            failUrlList = urlList.stream().collect(Collectors.toList());
 
             Long saveBoardId = boardService.save(boardDto, urlList);
 
             return ResponseEntity.ok().body("save boardId : " + saveBoardId);
 
         } catch (Exception e) {
+            s3Uploader.deleteFiles(failUrlList, dirname);
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
@@ -74,8 +79,11 @@ public class BoardController {
     public ResponseEntity<String> modify(@RequestPart("images") List<MultipartFile> multipartFileList,
                                          @RequestPart("requestDto") RequestBoardDto boardDto) {
 
+        List<String> failUrlList = null;
+
         try {
             List<String> urlList = s3Uploader.uploadFiles(multipartFileList, dirname);
+            failUrlList = urlList.stream().collect(Collectors.toList());
 
             List<String> deleteUrlList = boardService.modify(boardDto, urlList);
 
@@ -84,6 +92,7 @@ public class BoardController {
             return ResponseEntity.ok().body("modified boardId :" + boardDto.getId());
 
         } catch (Exception e) {
+            s3Uploader.deleteFiles(failUrlList, dirname);
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
