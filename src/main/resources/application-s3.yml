@@ -3,9 +3,9 @@ cloud:
     stack:
       auto: false
     region:
-      static: ap-northeast-2
+      static: 
     credentials:
-      access-key: AKIAWWGNHJ33XOCQJRWO
-      secret-key: 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
+      access-key: 
+      secret-key: 
     s3:
-      bucket: scnu-gotravel
+      bucket: 
