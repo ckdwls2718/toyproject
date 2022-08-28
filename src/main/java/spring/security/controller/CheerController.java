@@ -9,7 +9,6 @@ import spring.security.service.CheerService;
 
 @RestController
 @RequiredArgsConstructor
-@Slf4j
 @RequestMapping("/cheer")
 public class CheerController {
 

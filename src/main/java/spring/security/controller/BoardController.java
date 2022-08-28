@@ -21,14 +21,13 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
-@Slf4j
 @RequestMapping("/board")
 public class BoardController {
 
     private final BoardService boardService;
     private final CommentService commentService;
     private final S3Uploader s3Uploader;
-    private static final String dirname = "test";
+    private final String dirname = "test";
 
 
     @GetMapping("")

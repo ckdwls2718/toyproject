@@ -9,7 +9,6 @@ import javax.persistence.Id;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString
 public class RefreshToken {
 
     @Id
