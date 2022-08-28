@@ -2,13 +2,17 @@ spring:
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
 
-#    url: jdbc:mariadb://localhost:3306/toyproject
-#    username: ChanGenie
-#    password:
+    url: jdbc:mariadb://localhost:3306/toyproject
+    username: ChanGenie
+    password:
+
+#    url: jdbc:mariadb://changjindb-1.cmmetqyyxlhs.ap-northeast-2.rds.amazonaws.com:3306/toyproject
+#    username: root
+#    password: mgpdwr75zi
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
 #        show_sql: true
@@ -28,3 +32,7 @@ logging.level:
 
 jwt:
   secret: asdasjdhqwiueqwyeiqwhrtwejkrthskjdgfhsdoiufysaiurwyeruiweryiuewasdas1231qweqwjhktehkjwqrwrsdfatytreuo34275349534315234557567562sdgsgdf
+
+#server:
+#  address: 172.31.47.155
+#  port: 8080
