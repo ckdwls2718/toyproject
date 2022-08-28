@@ -6,10 +6,6 @@ spring:
 #    username: ChanGenie
 #    password:
 
-    url: jdbc:mariadb://changjindb-1.cmmetqyyxlhs.ap-northeast-2.rds.amazonaws.com:3306/toyproject
-    username: root
-    password: mgpdwr75zi
-
   jpa:
     hibernate:
       ddl-auto: create
@@ -32,7 +28,3 @@ logging.level:
 
 jwt:
   secret: asdasjdhqwiueqwyeiqwhrtwejkrthskjdgfhsdoiufysaiurwyeruiweryiuewasdas1231qweqwjhktehkjwqrwrsdfatytreuo34275349534315234557567562sdgsgdf
-
-server:
-  address: 172.31.47.155
-  port: 8080
