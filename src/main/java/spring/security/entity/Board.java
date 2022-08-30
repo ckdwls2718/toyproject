@@ -42,6 +42,10 @@ public class Board {
     @Column(nullable = false)
     private LocalDate finishDate;
 
+    @OneToOne(mappedBy = "board", cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "epilogue_id", unique = true)
+    private Epilogue epilogue;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;

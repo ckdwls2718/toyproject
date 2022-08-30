@@ -8,6 +8,8 @@ import spring.security.dto.MemberResponseDto;
 import spring.security.dto.PWDto;
 import spring.security.service.MemberService;
 
+import javax.validation.Valid;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/member")
@@ -25,12 +27,12 @@ public class MemberController {
     }
 
     @PutMapping("/changeNick")
-    public ResponseEntity<MemberResponseDto> changeNickname(@RequestBody MemberRequestDto requestDto) {
+    public ResponseEntity<MemberResponseDto> changeNickname(@RequestBody @Valid MemberRequestDto requestDto) {
         return ResponseEntity.ok(memberService.changeNickname(requestDto));
     }
 
     @PutMapping("/changePassword")
-    public ResponseEntity<MemberResponseDto> changePassword(@RequestBody PWDto dto) {
+    public ResponseEntity<MemberResponseDto> changePassword(@RequestBody @Valid PWDto dto) {
         return ResponseEntity.ok(memberService.changePassword(dto));
     }
 

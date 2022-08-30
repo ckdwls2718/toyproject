@@ -7,12 +7,20 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import spring.security.entity.Authority;
 import spring.security.entity.Member;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+
 @Getter
 @ToString
 public class MemberRequestDto {
 
+    @Email
     private String email;
+
+    @NotBlank
     private String password;
+
+    @NotBlank
     private String nickname;
 
     public Member toMember(PasswordEncoder passwordEncoder) {

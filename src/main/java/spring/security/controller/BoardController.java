@@ -13,6 +13,7 @@ import spring.security.service.BoardService;
 import spring.security.service.CommentService;
 import spring.security.service.S3Uploader;
 
+import javax.validation.Valid;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Collections;
@@ -43,7 +44,7 @@ public class BoardController {
 
     @PostMapping(value = "", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<String> save(@RequestPart("images") List<MultipartFile> multipartFileList,
-                                       @RequestPart("requestDto") RequestBoardDto boardDto) {
+                                       @RequestPart("requestDto") @Valid RequestBoardDto boardDto) {
 
         List<String> failUrlList = null;
 
@@ -76,7 +77,7 @@ public class BoardController {
     // 수정은 기간 시작전에만 가능하다.
     @PutMapping(value = "/modify", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<String> modify(@RequestPart("images") List<MultipartFile> multipartFileList,
-                                         @RequestPart("requestDto") RequestBoardDto boardDto) {
+                                         @RequestPart("requestDto") @Valid RequestBoardDto boardDto) {
 
         List<String> failUrlList = null;
 
@@ -113,7 +114,7 @@ public class BoardController {
 
     @PostMapping("/{boardId}/comment")
     public ResponseEntity<String> saveComment(@PathVariable("boardId") Long boardId,
-                                              @RequestBody CommentDto commentDto) {
+                                              @RequestBody @Valid CommentDto commentDto) {
 
         Long donation = commentService.save(boardId, commentDto);
 
@@ -125,7 +126,7 @@ public class BoardController {
 
     @DeleteMapping("/{boardId}/comment")
     public ResponseEntity<String> deleteComment(@PathVariable("boardId") Long boardId,
-                                                @RequestBody CommentDto commentDto) {
+                                                @RequestBody @Valid CommentDto commentDto) {
 
         commentService.delete(commentDto.getId());
 

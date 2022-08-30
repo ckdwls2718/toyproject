@@ -2,6 +2,8 @@ package spring.security.dto;
 
 import lombok.*;
 
+import javax.validation.constraints.NotBlank;
+
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
@@ -10,7 +12,13 @@ import lombok.*;
 public class CommentDto {
 
     private Long id;
+
+    @NotBlank
     private String content;
+
+    @NotBlank
     private String nickname;
+
+    @NotBlank
     private Long donation;
 }

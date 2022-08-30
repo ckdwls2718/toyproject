@@ -10,6 +10,8 @@ import spring.security.dto.TokenDto;
 import spring.security.dto.TokenRequestDto;
 import spring.security.service.AuthService;
 
+import javax.validation.Valid;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/auth")
@@ -17,17 +19,17 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/signup")
-    public ResponseEntity<MemberResponseDto> signup(@RequestBody MemberRequestDto dto) {
+    public ResponseEntity<MemberResponseDto> signup(@RequestBody @Valid MemberRequestDto dto) {
         return ResponseEntity.ok(authService.singUp(dto));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<TokenDto> login(@RequestBody MemberRequestDto dto) {
+    public ResponseEntity<TokenDto> login(@RequestBody @Valid MemberRequestDto dto) {
         return ResponseEntity.ok(authService.login(dto));
     }
 
     @PostMapping("/reissue")
-    public ResponseEntity<TokenDto> reissue(@RequestBody TokenRequestDto dto) {
+    public ResponseEntity<TokenDto> reissue(@RequestBody @Valid TokenRequestDto dto) {
         return ResponseEntity.ok(authService.reissue(dto));
     }
 

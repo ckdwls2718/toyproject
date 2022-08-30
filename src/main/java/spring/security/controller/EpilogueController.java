@@ -3,15 +3,14 @@ package spring.security.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import spring.security.dto.RequestEpilogueDto;
+import spring.security.dto.ResponseEpilogueDto;
 import spring.security.service.EpilogueService;
 import spring.security.service.S3Uploader;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,7 +25,7 @@ public class EpilogueController {
 
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<String> save(@RequestPart("images") List<MultipartFile> multipartFileList,
-                                       @RequestPart("requestDto") RequestEpilogueDto epilogueDto) {
+                                       @RequestPart("requestDto") @Valid RequestEpilogueDto epilogueDto) {
 
         List<String> failUrlList = null;
 
@@ -44,6 +43,11 @@ public class EpilogueController {
 
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-
     }
+
+    @GetMapping("/{boardId}")
+    public ResponseEntity<ResponseEpilogueDto> findOne(@PathVariable("boardId") Long boardId) {
+        return ResponseEntity.ok().body(epilogueService.findOne(boardId));
+    }
+
 }
