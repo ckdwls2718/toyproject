@@ -63,7 +63,7 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
                 .and()
-                .cors()
+                .cors().configurationSource(corsConfigurationSource())
 
                 // 로그인 회원가입 API는 토큰이 없는 상태에서 요청이 들어오기 때문에 permitAll 설정
                 .and()
